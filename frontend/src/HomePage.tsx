@@ -20,11 +20,15 @@ export const HomePage = () => {
         doGetUnasnweredQuestions();
     }, []);
 
+    const handleAskQuestionClick = () => {
+        console.log('Clicked');
+    }
+
     return (
         <Page title={"Home"}>
             <div>
                 <PageTitle>Unanswered Questions</PageTitle>
-                <button>Ask a question</button>
+                <button onClick={ handleAskQuestionClick }>Ask a question</button>
                 {
                     questionsLoading
                         ? <div>loading..</div>
