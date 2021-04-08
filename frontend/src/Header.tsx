@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles/header.scss";
 
 export const Header = () => {
 
@@ -9,12 +10,13 @@ export const Header = () => {
     }
 
     return (
-        <div>
-            <a href="./">Q&A</a>
+        <div id="header-container">
+            <a href="./" className='badge'><h2>Q&A</h2></a>
             <input type="text" onChange={ handleSearchInputChange } placeholder="Search.." />
-            <a href="./signin">
+            <a href="./signin" className="btn btn-primary">
                 <span>Sign In</span>
             </a>
         </div>
     );
+
 };
