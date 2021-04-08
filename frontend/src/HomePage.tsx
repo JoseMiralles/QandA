@@ -25,17 +25,20 @@ export const HomePage = () => {
     }
 
     return (
-        <Page title={"Home"}>
-            <div>
-                <PageTitle>Unanswered Questions</PageTitle>
-                <button onClick={ handleAskQuestionClick }>Ask a question</button>
+        <Page>
+            <div id='home_page'>
+                
+                <span className='centered-bar top-bar'>
+                    <PageTitle>Unanswered Questions</PageTitle>
+                    <button className='btn btn-primary' onClick={ handleAskQuestionClick }>Ask a question</button>
+                </span>
+
                 {
                     questionsLoading
-                        ? <div>loading..</div>
+                        ? <div className="loading">loading..</div>
                         : (
                             <QuestionList
                                 data={questions}
-                                renderItem={question => <div>{question.title}</div>}
                             />
                         )
                 }

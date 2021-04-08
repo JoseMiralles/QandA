@@ -1,0 +1,23 @@
+@import "./values.scss";
+@import "./colors.scss";
+
+.question-list {
+    display: flex;
+    justify-content: center;
+
+    max-width: 1400px;
+    padding: $common-padding * 1px;
+
+    li {
+        padding: $common-padding * 1px;
+        width: 100%;
+        list-style-type: none;
+        border-top: solid 3px $secondary;
+        box-shadow: 0px 0px 5px 1px $ligth-gray;
+    }
+
+    .preview{
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+}

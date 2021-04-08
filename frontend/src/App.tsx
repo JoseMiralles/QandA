@@ -5,9 +5,12 @@ import { HomePage } from "./HomePage";
 
 function App() {
   return (
-    <div>
+    <div id='main-body-wrapper'>
       <Header />
-      <HomePage />
+      <br/>
+      <div id='main-content-wrapper'>
+        <HomePage />
+      </div>
     </div>
   );
 }

@@ -11,9 +11,9 @@ export const Header = () => {
 
     return (
         <div id="header-container">
-            <a href="./" className='badge'><h2>Q&A</h2></a>
-            <input type="text" onChange={ handleSearchInputChange } placeholder="Search.." />
-            <a href="./signin" className="btn btn-primary">
+            <a href="./" id='main-logo'>Q&A</a>
+            <input className='search-bar' type="text" onChange={ handleSearchInputChange } placeholder="Search.." />
+            <a href="./signin" className="btn">
                 <span>Sign In</span>
             </a>
         </div>

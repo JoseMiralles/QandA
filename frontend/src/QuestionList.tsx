@@ -1,5 +1,7 @@
 import React from "react";
 
+import './styles/QuestionList.scss';
+
 import { QuestionData } from "./QuestionsData";
 import { Question } from "./Question";
 
@@ -9,7 +11,7 @@ interface Props {
 }
 
 export const QuestionList = ({ data, renderItem }: Props) => (
-    <ul>
+    <ul className='question-list'>
         { data && data.map(question => (
             <li key={question.questionId}>
                 {

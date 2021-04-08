@@ -2,8 +2,20 @@
 
 #header-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
 
     border-bottom: 1px solid $ligth-gray;
     padding: 17px;
+
+    #main-logo{
+        font-size: 20px;
+    }
+
+    .search-bar{
+        flex-grow: 2;
+        max-width: 500px;
+    }
+
 }

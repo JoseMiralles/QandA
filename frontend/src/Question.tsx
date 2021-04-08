@@ -8,12 +8,12 @@ interface Props {
 
 export const Question = ({ data, showContent = true }: Props) => (
     <div>
-        <div>
+        <h4>
             {data.title}
-        </div>
+        </h4>
         {
             showContent &&
-            (<div>
+            (<div className='preview'>
                 {
                     data.content.length > 50
                         ? `${data.content.substring(0, 50)}...`
@@ -21,8 +21,8 @@ export const Question = ({ data, showContent = true }: Props) => (
                 }
             </div>)
         }
-        <div>
+        <small>
             {`Asked by ${data.userName} on ${data.created.toLocaleDateString()} ${data.created.toLocaleTimeString()}`}
-        </div>
+        </small>
     </div>
 );
