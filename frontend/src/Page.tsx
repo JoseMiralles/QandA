@@ -9,7 +9,9 @@ interface Props {
 export const Page = ({ title, children }: Props) => {
     return (
         <div>
-            { title && <PageTitle>{title}</PageTitle>}
+            <div id='page-title'>
+                { title && <PageTitle>{title}</PageTitle>}
+            </div>
             { children }
         </div>
     );

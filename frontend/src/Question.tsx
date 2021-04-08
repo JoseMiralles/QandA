@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { QuestionData } from "./QuestionsData";
 
 interface Props {
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export const Question = ({ data, showContent = true }: Props) => (
-    <div>
+    <Link to={`/questions/${data.questionId}`}>
         <h4>
             {data.title}
         </h4>
@@ -24,5 +25,5 @@ export const Question = ({ data, showContent = true }: Props) => (
         <small>
             {`Asked by ${data.userName} on ${data.created.toLocaleDateString()} ${data.created.toLocaleTimeString()}`}
         </small>
-    </div>
+    </Link>
 );

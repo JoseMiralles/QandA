@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./styles/header.scss";
 
 export const Header = () => {
@@ -11,11 +12,11 @@ export const Header = () => {
 
     return (
         <div id="header-container">
-            <a href="./" id='main-logo'>Q&A</a>
+            <Link to="/" id='main-logo'>Q&A</Link>
             <input className='search-bar' type="text" onChange={ handleSearchInputChange } placeholder="Search.." />
-            <a href="./signin" className="btn">
+            <Link to="/signin" className="btn">
                 <span>Sign In</span>
-            </a>
+            </Link>
         </div>
     );
 
