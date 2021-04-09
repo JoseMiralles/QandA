@@ -1,19 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import "./styles/header.scss";
 
-export const Header = () => {
+type FormData = {
+    search: string;
+};
 
-    const handleSearchInputChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        console.log(e.currentTarget.value);
-    }
+export const Header = (): JSX.Element => {
+
+    const { register, watch } = useForm<FormData>();
+    const [searchParams] = useSearchParams();
+    const criteria = searchParams.get('criteria') || "";
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(watch("search"));
+    };
 
     return (
         <div id="header-container">
             <Link to="/" id='main-logo'>Q&A</Link>
-            <input className='search-bar' type="text" onChange={ handleSearchInputChange } placeholder="Search.." />
+            <form onSubmit={ handleSubmit }>
+                <input
+                    {...register("search")}
+                    defaultValue={criteria}
+                    className='search-bar'
+                    name="search"
+                    type="text"
+                    placeholder="Search.."
+                />
+            </form>
             <Link to="/signin" className="btn">
                 <span>Sign In</span>
             </Link>
