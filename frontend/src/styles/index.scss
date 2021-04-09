@@ -1,8 +1,13 @@
-@import '~bootstrap/scss/bootstrap.scss';
+@import "./colors.scss";
 @import './values.scss';
+@import '~bootstrap/scss/bootstrap.scss';
 
 ul {
     padding-inline-start: 0px;
+}
+
+input, textarea {
+    border: solid 1px $ligth-gray;
 }
 
 #main-body-wrapper{
@@ -19,6 +24,10 @@ ul {
 
 #page-title {
     text-align: center;
+}
+
+.card-shadow {
+    box-shadow: 0px 0px 5px 1px lightgrey;
 }
 
 .centered-bar {

@@ -1,0 +1,19 @@
+@import "./values.scss";
+@import "./colors.scss";
+
+.form {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: $common-padding * 1px;
+
+    padding: $common-padding * 1px;
+
+    input, textarea {
+        margin-bottom: $common-padding * 1px;
+    }
+
+    .error {
+        text-align: right;
+    }
+}
