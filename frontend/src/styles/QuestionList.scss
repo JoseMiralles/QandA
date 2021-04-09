@@ -14,7 +14,7 @@
         width: 100%;
         list-style-type: none;
         border-top: solid 3px $secondary;
-        box-shadow: 0px 0px 5px 1px $ligth-gray;
+        box-shadow: $shadow;
         margin-bottom: $common-padding * 1px;
     }
 

@@ -8,7 +8,7 @@ interface Props {
 
 export const Page = ({ title, children }: Props) => {
     return (
-        <div>
+        <div className="container">
             <div id='page-title'>
                 { title && <PageTitle>{title}</PageTitle>}
             </div>

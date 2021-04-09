@@ -1,0 +1,20 @@
+@import "./values.scss";
+@import "./colors.scss";
+
+.Question {
+    padding: $common-padding * 1px;
+    box-shadow: $shadow;
+
+    .answer-list {
+        list-style: none;
+
+        li {
+            padding-bottom: $common-padding * 1px;
+            padding-top: $common-padding * 1px;
+        }
+
+        li:not(:last-child) {
+            border-bottom: solid 1px $ligth-gray;
+        }
+    }
+}

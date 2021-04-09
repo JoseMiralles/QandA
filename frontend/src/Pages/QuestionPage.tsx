@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 
 import { Page } from "../Page";
 import { QuestionData, getQuestion } from "../QuestionsData";
+import { AnswerList } from "../AnswerList";
+
+import "../styles/Question.scss";
 
 export const QuestionPage = () => {
 
@@ -23,10 +26,28 @@ export const QuestionPage = () => {
 
     return (
         <Page>
-            <div>
-                <div>
+            <div className="Question">
+
+                <h3>
                     { question ? question.title : `loading..` }
-                </div>
+                </h3>
+
+                {question && (
+                    <>
+                        <br/>
+                        <p>{question.content}</p>
+                        <i>
+                            {`Asked by ${question.userName} on
+                            ${question.created.toLocaleDateString()}
+                            ${question.created.toLocaleTimeString()}`}
+                        </i>
+
+                        <hr />
+                        
+                        {question.answers && <AnswerList data={ question.answers } /> }
+                    </>
+                )}
+
             </div>
         </Page>
     );

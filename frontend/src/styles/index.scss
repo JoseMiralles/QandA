@@ -1,6 +1,10 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import './values.scss';
 
+ul {
+    padding-inline-start: 0px;
+}
+
 #main-body-wrapper{
     display: flex;
     flex-direction: column;

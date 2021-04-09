@@ -71,6 +71,14 @@ export const getQuestion = async (id: number): Promise<QuestionData | null> => {
   return results[0] ? results[0] : null;
 };
 
+export const searchQuestions = async (query: string): Promise<QuestionData[]> => {
+  await wait(1000);
+  return questions.filter(q =>
+    q.content.toLowerCase().includes(query.toLowerCase()) ||
+    q.title.toLowerCase().includes(query.toLowerCase())
+  );
+};
+
 const wait = (ms: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
