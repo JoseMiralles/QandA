@@ -1,8 +1,10 @@
 import React from "react";
 import { Page } from "../Page";
 
-export const AskPage = () => {
+const AskPage = () => {
     return (
         <Page title="Ask a question">{ null }</Page>
     );
 };
+
+export default AskPage;

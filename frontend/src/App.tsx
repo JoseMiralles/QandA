@@ -4,10 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./Header";
 import { HomePage } from "./Pages/HomePage";
 import { SignInPage } from "./Pages/SignInPage";
-import { AskPage } from "./Pages/AskPage";
 import { SearchPage } from "./Pages/SearchPage";
 import { NotFoundPage } from "./Pages/NotFoundPage";
 import { QuestionPage } from "./Pages/QuestionPage";
+
+const AskPage = React.lazy(() => import('./Pages/AskPage'));
 
 function App() {
   return (
@@ -21,13 +22,22 @@ function App() {
         <div id='main-content-wrapper'>
           <Routes>
 
-            <Route path="" element={ <HomePage /> } />
+            <Route path="" element={<HomePage />} />
             <Route path="search" element={<SearchPage />} />
-            <Route path="ask" element={<AskPage />} />
             <Route path="signin" element={<SignInPage />} />
+
+            <Route path="ask" element={
+              <React.Suspense
+                fallback={
+                  <div>Loading..</div>
+                }
+              >
+                <AskPage />
+              </React.Suspense>
+            }/>
             
             {/* Handle resources with specific Ids */}
-            <Route path="questions/:questionId" element={ <QuestionPage /> } />
+            <Route path="questions/:questionId" element={ <QuestionPage /> }/>
             
             {/* Handle "not found" pages */}
             <Route path="*" element={ <NotFoundPage/> } />
