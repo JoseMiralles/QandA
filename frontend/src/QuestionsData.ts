@@ -1,3 +1,5 @@
+import { AnswerList } from "./AnswerList";
+
 export interface QuestionData {
   questionId: number;
   title: string;
@@ -10,6 +12,20 @@ export interface QuestionData {
 
 export interface AnswerData {
   answerId: number;
+  content: string;
+  userName: string;
+  created: Date;
+}
+
+export interface PostQuestionData {
+  title: string;
+  content: string;
+  userName: string;
+  created: Date;
+}
+
+export interface PostAnwerData {
+  questionId: number;
   content: string;
   userName: string;
   created: Date;
@@ -58,6 +74,30 @@ const questions: QuestionData[] = [
     answers: [],
   },
 ];
+
+export const postQuesiton =
+  async (question: PostQuestionData): Promise<QuestionData | undefined> => {
+    await wait(1000);
+    const questionId = Math.max(...questions.map(q => q.questionId)) + 1;
+    const newQuestion: QuestionData = {
+      ...question,
+      questionId,
+      answers: []
+    };
+    questions.push(newQuestion);
+    return newQuestion;
+  };
+
+export const postAnswer =
+  async (answer: PostAnwerData): Promise<AnswerData | undefined> => {
+    await wait(1000);
+    
+    const question: QuestionData = questions.filter(q => q.questionId === answer.questionId)[0];
+    const newAnswer: AnswerData = { answerId: 99, ...answer }
+    question.answers.push(newAnswer);
+    
+    return newAnswer;
+  };
 
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
   await wait(1000);

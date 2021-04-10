@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "./styles/header.scss";
 
@@ -9,19 +9,19 @@ type FormData = {
 
 export const Header = (): JSX.Element => {
 
-    const { register, watch } = useForm<FormData>();
+    const { register, watch, handleSubmit } = useForm<FormData>();
     const [searchParams] = useSearchParams();
     const criteria = searchParams.get('criteria') || "";
+    const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log(watch("search"));
+    const submitForm = ({ search }: FormData) => {
+        navigate(`search?criteria=${search}`);
     };
 
     return (
         <div id="header-container">
             <Link to="/" id='main-logo'>Q&A</Link>
-            <form onSubmit={ handleSubmit }>
+            <form onSubmit={ handleSubmit(submitForm) }>
                 <input
                     {...register("search")}
                     defaultValue={criteria}

@@ -2,6 +2,10 @@
 @import './values.scss';
 @import '~bootstrap/scss/bootstrap.scss';
 
+body {
+    word-wrap: break-word;
+}
+
 ul {
     padding-inline-start: 0px;
 }
