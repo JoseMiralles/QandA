@@ -1,23 +1,27 @@
 import React from "react";
 
 import { QuestionList } from "../QuestionList";
-import { getUnansweredQuestions, QuestionData } from "../QuestionsData";
+import { getUnansweredQuestions } from "../QuestionsData";
 import { Page } from "../Page";
 import { PageTitle } from "../PageTitle";
 import { useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { gettingUnansweredQuestionsAction, gotUnansweredQuestionsAction  } from "../Actions/QuestionActions";
+import { IAppState } from "../Store";
 
 export const HomePage = () => {
 
+    const dispatch = useDispatch();
+    const questions = useSelector((state: IAppState) => state.questions.unanswered);
+    const questionsLoading = useSelector((state: IAppState) => state.questions.loading);
     const navigate = useNavigate();
-    const [questions, setQuestions] = React.useState<QuestionData[]>([]);
-    const [questionsLoading, setQuestionsLoading] = React.useState<boolean>(true);
 
     // useEffect works similarly to ComponentDidMount, in that it gets called after the first render.
     React.useEffect(() => {
         const doGetUnasnweredQuestions = async () => {
-            const unansweredQuestions: QuestionData[] = await getUnansweredQuestions();
-            setQuestions(unansweredQuestions);
-            setQuestionsLoading(false);
+            dispatch(gettingUnansweredQuestionsAction());
+            const unansweredQuestions = await getUnansweredQuestions();
+            dispatch(gotUnansweredQuestionsAction(unansweredQuestions));
         };
         doGetUnasnweredQuestions();
     }, []);
