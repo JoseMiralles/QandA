@@ -41,7 +41,7 @@ export const quesitonsReducer = (state = initialQuestionState, action: QuestionA
         case SEARCHINGQUESTIONS: {
             return {
                 ...state,
-                loading: false,
+                loading: true,
                 searched: []
             }
         }
