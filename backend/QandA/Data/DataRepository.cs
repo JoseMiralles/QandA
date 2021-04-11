@@ -88,7 +88,7 @@ namespace QandA.Data
                 connection.Open();
                 return connection.Query<QuestionGetManyResponse>
                     (
-                        @"EXEC dbo.Question_GetMany_BySearch@Search = @Search",
+                        @"EXEC dbo.Question_GetMany_BySearch @Search = @Search",
                         new { Search = search } // Helps avoid SQL Injection attacks.
                     );
             }
@@ -131,7 +131,7 @@ namespace QandA.Data
                 connection.Execute
                 (
                     @"EXEC dbo.Question_Put
-                    @QuestionId = @QuestionId, @Title = Title,
+                    @QuestionId = @QuestionId, @Title = @Title,
                     @Content = @Content",
                     new {
                         QuestionId = questionId,
@@ -150,7 +150,7 @@ namespace QandA.Data
                 connection.Open();
                 connection.Execute
                 (
-                    @"EXEC dvo.Question_Delete
+                    @"EXEC dbo.Question_Delete
                     @QuestionId = @QuestionId",
                     new { QuestionId = questionId }
                 );
@@ -171,5 +171,6 @@ namespace QandA.Data
                 );
             }
         }
+
     }
 }
