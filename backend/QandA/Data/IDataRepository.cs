@@ -17,6 +17,7 @@ namespace QandA.Data
             int pageSize
             );
         IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions();
+        Task<IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestionsAsync();
         QuestionGetSingleResponse GetQuestion(int questionId);
         AnswerGetResponse GetAnswer(int answerId);
 

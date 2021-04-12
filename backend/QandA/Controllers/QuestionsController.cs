@@ -43,9 +43,9 @@ namespace QandA.Controllers
 
         // api/questions/unanswered
         [HttpGet("unanswered")]
-        public IEnumerable<QuestionGetManyResponse> GetUnansweredQuestions()
+        public async Task <IEnumerable<QuestionGetManyResponse>> GetUnansweredQuestions()
         {
-            return _dataRepository.GetUnansweredQuestions();
+            return await _dataRepository.GetUnansweredQuestionsAsync();
         }
 
         // api/questions/:quesitonId
