@@ -11,7 +11,13 @@ namespace QandA.Data.Models
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please include content for the question.")]
+        public string Content { get; set; }
+    }
+
+    public class QuestionPostFullRequest
+    {
+        public string Title { get; set; }
         public string Content { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }

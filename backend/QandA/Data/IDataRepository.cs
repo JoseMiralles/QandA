@@ -14,10 +14,10 @@ namespace QandA.Data
         QuestionGetSingleResponse GetQuestion(int questionId);
         AnswerGetResponse GetAnswer(int answerId);
 
-        QuestionGetSingleResponse PostQuestion(QuestionPostRequest question);
+        QuestionGetSingleResponse PostQuestion(QuestionPostFullRequest question);
         QuestionGetSingleResponse PutQuestion(int questionId, QuestionPutRequest question);
         void DeleteQuestion(int questionId);
-        AnswerGetResponse PostAnswer(AnswerPostRequest answer);
+        AnswerGetResponse PostAnswer(AnswerPostFullRequest answer);
         bool QuestionExists(int questionId);
     }
 }
