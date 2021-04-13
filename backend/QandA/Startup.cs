@@ -49,7 +49,12 @@ namespace QandA
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "QandA", Version = "v1" });
             });
 
+            // Force instances of IDataRepository, to refer to DataRepository.
             services.AddScoped<IDataRepository, DataRepository>();
+
+            services.AddMemoryCache();
+            // Forces the app to create only a single instance, that is then shared trough out all http requests.
+            services.AddSingleton<IQuestionCache, QuestionCache>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

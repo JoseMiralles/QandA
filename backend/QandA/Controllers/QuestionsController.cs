@@ -16,9 +16,12 @@ namespace QandA.Controllers
     {
         private readonly IDataRepository _dataRepository;
 
-        public QuestionsController(IDataRepository dataRepository)
+        private readonly IQuestionCache _cache;
+
+        public QuestionsController(IDataRepository dataRepository, IQuestionCache questionCache)
         {
             this._dataRepository = dataRepository;
+            this._cache = questionCache;
         }
 
         [HttpGet]
@@ -52,11 +55,14 @@ namespace QandA.Controllers
         [HttpGet("{questionId}")]
         public ActionResult<QuestionGetSingleResponse> GetQuestion(int questionId)
         {
-            var question = _dataRepository.GetQuestion(questionId);
+            var question = this._cache.Get(questionId);
 
             if (question == null)
             {
-                return NotFound();
+                question = _dataRepository.GetQuestion(questionId);
+                if (question == null) return NotFound();
+                // The question was not in the cache, but it was found, so store it in the cache.
+                this._cache.Set(question);
             }
 
             return question;
@@ -95,6 +101,10 @@ namespace QandA.Controllers
                 : questionPutRequest.Content;
 
             var savedQuestion = _dataRepository.PutQuestion(questionId, questionPutRequest);
+
+            // Remove this question from the cache, since it has been edited.
+            this._cache.Remove(questionId);
+
             return savedQuestion;
         }
 
@@ -106,6 +116,7 @@ namespace QandA.Controllers
             if (question == null) return NotFound();
 
             _dataRepository.DeleteQuestion(questionId);
+            this._cache.Remove(questionId); // Delete from cache as well.
             return NoContent();
         }
 
@@ -124,6 +135,8 @@ namespace QandA.Controllers
                     UserName = "bob.test@test.com",
                     Created = DateTime.UtcNow
                 });
+
+            this._cache.Remove(answer.QuestionId.Value); // Remove from cache.
             return savedAnswer;
         }
 
