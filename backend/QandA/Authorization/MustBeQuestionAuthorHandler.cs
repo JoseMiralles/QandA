@@ -38,7 +38,7 @@ namespace QandA.Authorization
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             // Lookup the question with the questionId.
-            var question = _dataRepository.GetQuestion(questionIdAsInt);
+            var question = await _dataRepository.GetQuestion(questionIdAsInt);
             if (question == null)
             {
                 // Let the request trough. This is so that a 404 / not found code can be returned.
