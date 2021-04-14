@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Text.Json;
 
 using QandA.Data;
 using QandA.Data.Models;
@@ -19,8 +23,17 @@ namespace QandA.Controllers
 
         private readonly IQuestionCache _cache;
 
-        public QuestionsController(IDataRepository dataRepository, IQuestionCache questionCache)
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly string _authOUserInfo;
+
+        public QuestionsController(
+            IDataRepository dataRepository,
+            IQuestionCache questionCache,
+            IHttpClientFactory clientFactory,
+            IConfiguration configuration)
         {
+            this._clientFactory = clientFactory;
+            this._authOUserInfo = $"{configuration["Auth0:Authority"]}userinfo";
             this._dataRepository = dataRepository;
             this._cache = questionCache;
         }
@@ -71,14 +84,14 @@ namespace QandA.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult<QuestionGetSingleResponse> PostQuestion(QuestionPostRequest questionPostRequest)
+        public async ActionResult<QuestionGetSingleResponse> PostQuestion(QuestionPostRequest questionPostRequest)
         {
             var savedQuestion = _dataRepository.PostQuestion(
                 new QuestionPostFullRequest {
                     Title = questionPostRequest.Title,
                     Content = questionPostRequest.Content,
-                    UserId = "1",
-                    UserName = "bob.test@test.com",
+                    UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    UserName = await this.GetUserName(),
                     Created = DateTime.UtcNow
                 });
 
@@ -87,7 +100,7 @@ namespace QandA.Controllers
                 savedQuestion);
         }
 
-        [Authorize]
+        [Authorize(Policy = "MustBeQuestionAuthor")]
         [HttpPut("{questionId}")]
         public ActionResult<QuestionGetSingleResponse> PutQuestion(int questionId, QuestionPutRequest questionPutRequest)
         {
@@ -111,7 +124,7 @@ namespace QandA.Controllers
             return savedQuestion;
         }
 
-        [Authorize]
+        [Authorize(Policy = "MustBeQuestionAuthor")]
         [HttpDelete("{questionId}")]
         public ActionResult DeleteQuestion(int questionId)
         {
@@ -126,7 +139,7 @@ namespace QandA.Controllers
 
         [Authorize]
         [HttpPost("answer")]
-        public ActionResult<AnswerGetResponse> PostAnswer(AnswerPostRequest answer)
+        public async ActionResult<AnswerGetResponse> PostAnswer(AnswerPostRequest answer)
         {
             var questionExists = _dataRepository.QuestionExists(answer.QuestionId.Value);
 
@@ -136,13 +149,47 @@ namespace QandA.Controllers
                 new AnswerPostFullRequest {
                     QuestionId = answer.QuestionId.Value,
                     Content = answer.Content,
-                    UserId = "1",
-                    UserName = "bob.test@test.com",
+                    UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    UserName = await this.GetUserName(),
                     Created = DateTime.UtcNow
                 });
 
             this._cache.Remove(answer.QuestionId.Value); // Remove from cache.
             return savedAnswer;
+        }
+
+        private async Task<string> GetUserName()
+        {
+            var request = new HttpRequestMessage(
+                method: HttpMethod.Get,
+                requestUri: _authOUserInfo
+            );
+
+            request.Headers.Add(
+                name: "Authorization",
+                value: Request.Headers["Authorization"].First()
+            );
+
+            var client = _clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var user = JsonSerializer.Deserialize<User>(
+                    jsonContent,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }
+                );
+
+                return user.Name;
+            }
+            else
+            {
+                return "";
+            }
         }
 
     }
