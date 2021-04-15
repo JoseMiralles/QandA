@@ -34,6 +34,9 @@ export const Header = (): JSX.Element => {
             <Link to="/signin" className="btn">
                 <span>Sign In</span>
             </Link>
+            <Link to="/signout" className="btn">
+                <span>Sign Out</span>
+            </Link>
         </div>
     );
 
