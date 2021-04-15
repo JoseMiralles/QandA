@@ -23,6 +23,7 @@ export const Auth0Context = React.createContext<IAuth0Context>({
     loading: true
 });
 
+// A way to access the context defined above, from anywhere in the app.
 export const useAuth = () => React.useContext(Auth0Context);
 
 export const AuthProvider: React.FC = ({
@@ -68,17 +69,25 @@ export const AuthProvider: React.FC = ({
     return (
         <Auth0Context.Provider
             value={{
-                isAuthenticated,
-                user,
+                isAuthenticated, user,
                 signIn: () => getAuth0ClientFromState().loginWithRedirect(),
-                signout: () => getAuth0ClientFromState().logout({
+                signOut: () => getAuth0ClientFromState().logout({
                     client_id: authSettings.client_id,
-                    returnTo: Window.location.origin + `/signout-callback`,
+                    returnTo: window.location.origin + '/signout-callback',
                 }),
-                loading
+                loading,
             }}
         >
             {children}
         </Auth0Context.Provider>
     );
+};
+
+/**
+ * @returns An access token which was aquired silently and in a secure manner.
+ */
+export const getAccessToken = async () => {
+    const auth0FromHook = await createAuth0Client(authSettings);
+    const accessToken = await auth0FromHook.getTokenSilently();
+    return accessToken;
 };
