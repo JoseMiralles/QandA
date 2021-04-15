@@ -6,6 +6,7 @@ import { configureStore } from "./Store";
 import { Header } from "./Header";
 import { HomePage } from "./Pages/HomePage";
 import { SignInPage } from "./Pages/SignInPage";
+import { SignOutPage } from "./Pages/SignOutPage";
 import { SearchPage } from "./Pages/SearchPage";
 import { NotFoundPage } from "./Pages/NotFoundPage";
 import { QuestionPage } from "./Pages/QuestionPage";
@@ -29,7 +30,10 @@ function App() {
 
               <Route path="" element={<HomePage />} />
               <Route path="search" element={<SearchPage />} />
-              <Route path="signin" element={<SignInPage />} />
+              <Route path="signin" element={<SignInPage action="signin" />} />
+              <Route path="signin-callback" element={<SignInPage action="signin-callback" />} />
+              <Route path="signout" element={ <SignOutPage action="signout"/> } />
+              <Route path="signout-callback" element={ <SignOutPage action="signout-callback"/> } />
 
               <Route path="ask" element={
                 <React.Suspense
