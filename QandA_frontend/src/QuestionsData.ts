@@ -1,4 +1,5 @@
 import { AnswerList } from "./AnswerList";
+import { http } from "./http";
 
 export interface QuestionData {
   questionId: number;
@@ -29,6 +30,20 @@ export interface PostAnwerData {
   content: string;
   userName: string;
   created: Date;
+}
+
+export interface QuestionDataFromServer {
+  questionId: number;
+  title: string;
+  content: string;
+  userName: string;
+  created: string;
+  answers: Array<{
+    answerId: number;
+    content: string;
+    userName: string;
+    created: string;
+  }>;
 }
 
 const questions: QuestionData[] = [
@@ -100,34 +115,56 @@ export const postAnswer =
   };
 
 export const getUnansweredQuestions = async (): Promise<QuestionData[]> => {
-  let unansweredQuestions: QuestionData[];
 
-  const response = await fetch(
-    "http://localhost:5000/api/questions/unanswered"
-  );
-  unansweredQuestions = await response.json();
+  const result = await http<QuestionDataFromServer[]>({ path: '/questions/unanswered' });
+  
+  if (result.ok && result.body) {
+    return result.body.map(mapQuestionFromServer);
+  } else {
+    return [];
+  }
 
-  return unansweredQuestions.map(question => ({
-    ...question,
-    created: new Date(question.created)
-  }));
 };
 
 export const getQuestion = async (id: number): Promise<QuestionData | null> => {
-  await wait(1000);
-  const results = questions.filter(q => q.questionId === id);
+  
+  const result = await http<QuestionDataFromServer>({
+    path: `/questions/${id}`
+  });
 
-  return results[0] ? results[0] : null;
+  if (result.ok && result.body) {
+    return mapQuestionFromServer(result.body);
+  }
+  
+  return null;
+
 };
 
 export const searchQuestions = async (query: string): Promise<QuestionData[]> => {
-  await wait(1000);
-  return questions.filter(q =>
-    q.content.toLowerCase().includes(query.toLowerCase()) ||
-    q.title.toLowerCase().includes(query.toLowerCase())
-  );
+  const result = await http<QuestionDataFromServer[]>({
+    path: `/questions?search=${query}`
+  });
+
+  if (result.ok && result.body) {
+    return result.body.map(mapQuestionFromServer);
+  } else {
+    return [];
+  }
 };
 
 const wait = (ms: number): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
+
+export const mapQuestionFromServer = (
+  question: QuestionDataFromServer,
+): QuestionData => ({
+  ...question,
+  created: new Date(question.created),
+  answers: question.answers
+    ? question.answers.map((answer) => ({
+        ...answer,
+        created: new Date(answer.created),
+      }))
+    : [],
+});
