@@ -11,7 +11,7 @@ type FormData = {
     content: string;
 };
 
-const AskPage = (): JSX.Element => {
+const AskPage = () => {
 
     const [successfullySubmitted, setSuccessfullySubmitted] = React.useState<boolean>(false);
     const { register, handleSubmit, formState, formState: { errors } } = useForm<FormData>({ mode: "onBlur" });

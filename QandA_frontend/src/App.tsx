@@ -11,6 +11,7 @@ import { SearchPage } from "./Pages/SearchPage";
 import { NotFoundPage } from "./Pages/NotFoundPage";
 import { QuestionPage } from "./Pages/QuestionPage";
 import { AuthProvider } from "./Auth";
+import { AuthorizedPage } from "./AuthorizedPage";
 
 const AskPage = React.lazy(() => import('./Pages/AskPage'));
 
@@ -43,7 +44,9 @@ function App() {
                       <div>Loading..</div>
                     }
                   >
-                    <AskPage />
+                    <AuthorizedPage>
+                      <AskPage />
+                    </AuthorizedPage>
                   </React.Suspense>
                 } />
 

@@ -18,10 +18,13 @@ export const HomePage = () => {
 
     // useEffect works similarly to ComponentDidMount, in that it gets called after the first render.
     React.useEffect(() => {
+        let cancelled = false;
         const doGetUnasnweredQuestions = async () => {
             dispatch(gettingUnansweredQuestionsAction());
             const unansweredQuestions = await getUnansweredQuestions();
-            dispatch(gotUnansweredQuestionsAction(unansweredQuestions));
+
+            if (!cancelled)
+                dispatch(gotUnansweredQuestionsAction(unansweredQuestions));
         };
         doGetUnasnweredQuestions();
     }, []);
